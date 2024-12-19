@@ -24,3 +24,22 @@ resource "azurerm_api_management" "api" {
   publisher_name      = var.publisher_name
   sku_name            = "${var.sku}_${var.sku_count}"
 }
+
+data "azurerm_api_management" "api2" {
+  name                = azurerm_api_management.api.name
+  resource_group_name = azurerm_resource_group.rg.name
+}
+
+output "api_management_name" {
+  value = data.azurerm_api_management.api2.name
+}
+
+module "api_management2" {
+  source = "./api_management" # what is source? answer
+  api_management_name = data.azurerm_api_management.api2.name
+  resource_group_name = azurerm_resource_group.rg.name 
+}
+
+output "api_management_name" {
+  value = module.api_management2.api_management_name
+}
