@@ -9,7 +9,7 @@ resource "azurerm_resource_group" "example" {
   location = "West Europe"  # or your preferred region
 }
 
-# Create the virtual network
+# Create the virtual network with a CIDR block of 10.0.0.0/16
 resource "azurerm_virtual_network" "example" {
   name                = "example-vnet"
   location            = azurerm_resource_group.example.location
