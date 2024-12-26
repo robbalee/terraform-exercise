@@ -1,0 +1,2 @@
+# Ignore Terraform variable files
+azure-api-management/variables.tf

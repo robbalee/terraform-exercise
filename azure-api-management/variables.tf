@@ -11,7 +11,7 @@ variable "resource_group_name_prefix" {
 }
 
 variable "publisher_email" {
-  default     = "admin@contoso.com"
+  default     = "dmin2@MngEnvMCAP953625.onmicrosoft.com"
   description = "The email address of the owner of the service"
   type        = string
   validation {
@@ -21,7 +21,7 @@ variable "publisher_email" {
 }
 
 variable "publisher_name" {
-  default     = "Admin"
+  default     = "Admin2"
   description = "The name of the owner of the service"
   type        = string
   validation {
@@ -53,5 +53,5 @@ variable "sku_count" {
 variable "existing_resource_group_name" {
   description = "Name of existing resource group to use. If null, a new resource group will be created."
   type        = string
-  default     = null
+  default     = "rg-admin2-ai"
 }
