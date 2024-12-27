@@ -43,3 +43,4 @@ module "api_management2" {
 output "api_management_name" {
   value = module.api_management2.api_management_name
 }
+# Path: azure-api-management/variables.tf
