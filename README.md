@@ -4,7 +4,7 @@ Learning plan
 ## Learning Goals
 
 1. **Terraform Basics (Week 1)**
-   - HCL (HashiCorp Configuration Language) syntax
+   [x] HCL (HashiCorp Configuration Language) syntax
 
 2. **Resource Management (Week 2)**
    - Provider configuration
@@ -45,3 +45,8 @@ Learning plan
 - Proficiency in creating modular and reusable infrastructure code
 - Knowledge of state management and team collaboration
 - Experience with real-world infrastructure deployment scenarios
+
+
+Resources 
+[x] 1. aad-b2c
+[] 2.   
