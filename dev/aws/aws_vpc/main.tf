@@ -1,11 +1,5 @@
 terraform {
-    required_providers {
-        aws = {
-            source  = "hashicorp/aws"
-            version = "4.0"
-        }
-    }
-    backend "s3" {
+  backend "s3" {
         bucket         = "terraform-state-bucket"
         key            = "vpc/terraform.tfstate"
         region         = "eu-west-1"
@@ -13,16 +7,9 @@ terraform {
         encrypt        = true
     }
 }
-provider "aws" {
-    region = var.aws_region
-    access_key = var.aws_access_key # not a good practice
-    secret_key = var.aws_secret_key # just a placeholder
-}
-
 
 module "eu_vpc" {
-    module = "../../../modules/VPC" # change this ref
-    Name = "eu-vpc"
+    source = "../../../modules/VPC" # change this ref
     aws_region = "eu-west-1"
     vpc_cidr = "10.0.0.0/16"
     tags = {
