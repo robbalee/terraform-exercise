@@ -5,22 +5,23 @@ terraform {
             version = "4.0"
         }
     }
+    backend "s3" {
+        bucket         = "terraform-state-bucket"
+        key            = "vpc/terraform.tfstate"
+        region         = "eu-west-1"
+        dynamodb_table = "terraform-locks"
+        encrypt        = true
+    }
 }
 provider "aws" {
     region = var.aws_region
     access_key = var.aws_access_key # not a good practice
     secret_key = var.aws_secret_key # just a placeholder
 }
-backend "s3" {
-    bucket         = "terraform-state-bucket"
-    key            = "vpc/terraform.tfstate"
-    region         = "eu-west-1"
-    dynamodb_table = "terraform-locks"
-    encrypt        = true
-}
+
 
 module "eu_vpc" {
-    module = "./modules/VPC"
+    module = "../../../modules/VPC" # change this ref
     Name = "eu-vpc"
     aws_region = "eu-west-1"
     vpc_cidr = "10.0.0.0/16"
