@@ -8,6 +8,12 @@ terraform {
             version = "2.0.0"
         }
     }
+    backend "azurerm" {
+        resource_group_name = var.rg_name
+        storage_account_name = var.storage_account_name
+        container_name = var.container_name
+        key = "azurerm_vm/terraform.tfstate"
+    }
 }
 provider "azurerm" {
     features {}
@@ -32,14 +38,4 @@ resource "azurerm_virtual_network" "my_vnet" {
     location = azurerm_resource_group.my_rg.location
 }
 
-resource "azurerm_subnet" "my_subnet" {
-    name = ""
-    resource_group = ""
-    cidr = ""
-}
 
-resource "azurerm_public_ip" "my_public" {
-    name = ""
-    resource_group = ""
-    ip_addr = ""
-}

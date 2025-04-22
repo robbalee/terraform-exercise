@@ -49,4 +49,4 @@ Learning plan
 
 Resources 
 [x] 1. aad-b2c
-[] 2.   
+[] 2.  Test out /modules/keyvault -> then apply terragrunt on /azure/key_vault
