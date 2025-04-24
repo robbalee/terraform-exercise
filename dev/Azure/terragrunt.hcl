@@ -23,17 +23,17 @@ generate "provider" {
     EOF
 }
 
-remote_state {
-    resource_group_name = local.env_vars.state_resource_group
-    storage_account_name = local.env_vars.state_storage_account
-    container_name = local.env_vars.state_container
-    key = "${path_relative_to_include()}/terraform.tfstate"
+# remote_state {
+#     resource_group_name = local.env_vars.state_resource_group
+#     storage_account_name = local.env_vars.state_storage_account
+#     container_name = local.env_vars.state_container
+#     key = "${path_relative_to_include()}/terraform.tfstate"
     
-    generate = {
-        path = "backend.tf"
-        if_exists = "overwrite"
-    }
-}
+#     generate = {
+#         path = "backend.tf"
+#         if_exists = "overwrite"
+#     }
+# }
 
 inputs = {
     location = local.env_vars.location
@@ -43,3 +43,26 @@ inputs = {
 
 
 # this is the bare config that is copied to each environment
+
+remote_state {
+    backend = "s3"
+    
+    generate = {
+        path = "backend.tf"
+        if_exists = "overwrite"
+    }
+
+    config = {
+        bucket = "tf-state_random2431"
+        key = "${path_relative_to_include()}/terraform.tfstate"
+        region = "us-west-2"
+        dynamodb_table = "tr-state-table"
+        encrypt = true
+    }
+
+}
+
+resource "aws_eip" "pip" {
+    count = var.associate_public_ip_address ? 1 : 0
+    network_interface = aws_instance.server.primary_network_interface_id
+}

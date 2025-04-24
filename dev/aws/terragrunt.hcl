@@ -37,3 +37,22 @@ remote_state {
 locals {
     env_vars = yamldecode(file("environment_vars.yaml"))
 }
+
+# vpc/terragrunt.hcl
+dependencu "whatever" {
+    depends_on = "../vpc"
+}
+inputs = {
+    vpc_whatever  = dependency.vpc.output.vpc_id
+}
+
+varibale "vpc_whateve" {
+    description = ""
+    type = string
+}
+# main.tf 
+
+resource "what_i_will_import" "name" {}
+terraform init -> import 
+
+           
