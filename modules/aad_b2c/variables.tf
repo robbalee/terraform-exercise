@@ -1,26 +1,43 @@
+/**
+ * # Azure AD B2C Module - Variables
+ *
+ * This file defines all the variables used by the Azure AD B2C module.
+ */
+
 variable "name" {
-    description = "name for the AAD b2c tenant / directory"
-    type = string
-    default = "aad-b2c" # add random string 
-}
-variable "display_name" {
-    description = "display name for the AAD b2c tenant / directory"
-    type = string
-    default = "aad-b2c" # add random string 
+  description = "Base name for the Azure AD B2C directory (will be prefixed with 'aadb2c-')"
+  type        = string
 }
 
 variable "location" {
-    description = "Where does the data reside in azure regions"
-    type = string
+  description = "The Azure location where the B2C tenant should be created"
+  type        = string
+  
+  validation {
+    condition     = contains(["Europe", "United States", "Asia Pacific", "Australia"], var.location)
+    error_message = "Location must be one of: Europe, United States, Asia Pacific, Australia."
+  }
 }
 
 variable "sku" {
-    description = "sku for AAD B2C tenant / directory"
-    type = string
-    default = "Premiump1"
+  description = "The SKU/pricing tier for the B2C directory"
+  type        = string
+  default     = "PremiumP1"
+  
+  validation {
+    condition     = contains(["PremiumP1", "PremiumP2", "Standard"], var.sku)
+    error_message = "SKU must be either PremiumP1, PremiumP2, or Standard."
+  }
 }
 
 variable "rg_name" {
-    description = "resource group name"
-    type = string
+  description = "The resource group name where the B2C directory will be created"
+  type        = string
+}
+
+variable "data_residency_location" {
+  description = "The data residency location for the B2C directory"
+  type        = string
+  default     = "westeurope"
+  
 }

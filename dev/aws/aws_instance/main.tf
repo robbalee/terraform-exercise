@@ -1,42 +1,52 @@
+/**
+ * # AWS EC2 Instance Deployment for Development Environment
+ * 
+ * This configuration provisions an Amazon EC2 instance using the latest Amazon Linux 2023
+ * AMI with appropriate storage configuration. It's designed for development workloads
+ * with a focus on standardized deployment and secure storage.
+ *
+ * ## Features
+ * - Dynamically selects the latest Amazon Linux 2023 AMI
+ * - Configures instance with custom size EBS volume
+ * - Implements proper tagging for resource management
+ * - Configures secure storage with encryption
+ */
 
-# get images from image repository
+# Retrieve the latest Amazon Linux 2023 AMI from AWS Marketplace
 data "aws_ami" "amazon_linux" {
   most_recent = true
   owners      = ["amazon"]  # Amazon-owned AMIs
 
   filter {
     name   = "name"
-    values = ["al2023-ami-*-kernel-6.1-*"]  # Amazon Linux 2023
+    values = ["al2023-ami-*-kernel-6.1-*"]  # Amazon Linux 2023 with 6.1 kernel
   }
 
   filter {
     name   = "virtualization-type"
-    values = ["hvm"]
+    values = ["hvm"]  # Hardware Virtual Machine (recommended virtualization type)
   }
 }
 
+# Create an EC2 instance with the retrieved AMI
 resource "aws_instance" "ec2_instance" {
+    
     ami = data.aws_ami.amazon_linux.id
-    instance_type = var.instance_type
+    instance_type = var.instance_type  # Instance size defined in variables
     tags = {
-        Name = var.name 
+        Name = var.name  # Instance name from variables
     }
+    
+    # Attach an EBS volume for persistent storage
     ebs_block_device {
-        device_name = "/dev/sda1"
-        volume_size = 10
-        volume_type = "gp2" # this means general purpose SSD
-        delete_on_termination = true
+        device_name = "/dev/sda1"  # Primary device
+        volume_size = 10           # 10GB storage volume
+        volume_type = "gp2"        # General Purpose SSD (balanced performance/cost)
+        delete_on_termination = true  # Remove volume when instance is terminated
     }  
 }
 
-# t2.micro
-# 10 dynamoDB capacity units
-# 10 GB of volume
-# name = cloudacademylabs
-# s3 bucket for state 
-
-
-
+# Additional configuration for backend state storage
 terraform {
     required_providers {
         aws = {
@@ -53,13 +63,15 @@ terraform {
     }
 }
 
+# AWS provider configuration
 provider "aws" {
-    region = "us-west-2"
+    region = "us-west-2"  # US West (Oregon) region
 }
 
+# Alternative AMI data source with similar configuration
 data "aws_ami" "ami" {
     most_recent = true
-    owners      = ["amazon"]  # Amazon-owned AMIs
+    owners      = ["amazon"]
 
     filter {
         name   = "name"
@@ -72,25 +84,27 @@ data "aws_ami" "ami" {
     }
 } 
 
+# Second EC2 instance with enhanced configuration
 resource "aws_instance" "my_ec2" {
     ami = data.aws_ami.ami.id
     instance_type = var.instance_type
 
+    # Encrypted EBS volume configuration
     ebs_block_device {
         device_name = "/dev/sda1"
         volume_size = 10
         volume_type = "gp2"
-        encrypted = true
+        encrypted = true  # Data-at-rest encryption enabled
     }
 
+    # Root volume configuration
     root_block_device {
-        volume_size = 20  # Set to 20GB or less
-        volume_type = "gp3"
+        volume_size = 20            # 20GB root volume
+        volume_type = "gp3"         # Latest generation GP SSD
         delete_on_termination = true
     }
 
     tags = {
         Name = var.name
     }
-
 }

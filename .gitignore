@@ -19,3 +19,4 @@ dev/Azure/key_vault/terragrunt.hcl
 # Ignore additional Terraform variables file
 terragrunt.hcl
 .terragrunt-cache/
+plans.md
